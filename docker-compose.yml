@@ -14,7 +14,7 @@ services:
       - LC_ALL=${LC_ALL}
     volumes:
       - ./data/wineprefix:/home/alpine/.wine:rw
-      - ./data/shared:/home/alpine/shared
+      - ./data/shared:/home/alpine/shared:rw
   novnc:
     build:
       context: ./docker/novnc
@@ -25,9 +25,7 @@ services:
     environment:
       - VNC_HOST=x11vnc
   nginx:
-    build:
-      context: ./docker/nginx
-      dockerfile: ./Dockerfile
+    image: nginx:1.17.7-alpine
     container_name: nginx
     depends_on:
       - novnc
