@@ -1,0 +1,28 @@
+version: '2'
+services:
+  x11vnc:
+    build:
+      context: ./docker/x11vnc
+      dockerfile: ./Dockerfile
+    container_name: x11vnc
+    environment:
+      - VNC_RESOLUTION=${VNC_RESOLUTION}
+      - VNC_COL_DEPTH=${VNC_COL_DEPTH}
+      - VNC_PASSWORD=${VNC_PASSWORD}
+      - LANG=${LANG}
+      - LANGUAGE=${LANGUAGE}
+      - LC_ALL=${LC_ALL}
+    volumes:
+      - ./data/wineprefix:/home/alpine/.wine:rw
+      - ./data/shared:/home/alpine/shared
+  novnc:
+    build:
+      context: ./docker/novnc
+      dockerfile: ./Dockerfile
+    container_name: novnc
+    environment:
+      - VNC_HOST=x11vnc
+    ports:
+      - 80:6900
+      - 443:6900
+    

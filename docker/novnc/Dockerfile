@@ -1,0 +1,15 @@
+FROM i386/alpine:3.11
+RUN apk update \
+&& apk --no-cache add bash git python \
+&& rm -rf /tmp/* /var/cache/apk/*
+WORKDIR /app
+RUN wget -O /tmp/novnc.tgz https://github.com/novnc/noVNC/archive/v1.1.0.tar.gz \
+&& tar -C /app --strip-components=1 -xf /tmp/novnc.tgz \
+&& rm /tmp/novnc.tgz \
+&& sed -i -- "s/ps -p/ps -o pid | grep/g" /app/utils/launch.sh \
+&& cp /app/vnc.html /app/index.html
+ENV VNC_HOST=localhost VNC_PORT=5900 NOVNC_PORT=6900
+ADD entrypoint.sh /app
+RUN chmod +x /app/entrypoint.sh
+EXPOSE 6900
+ENTRYPOINT [ "/app/entrypoint.sh" ]
