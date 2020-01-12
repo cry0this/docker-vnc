@@ -12,4 +12,5 @@ ENV VNC_HOST=localhost VNC_PORT=5900 NOVNC_PORT=6900
 ADD entrypoint.sh /app
 RUN chmod +x /app/entrypoint.sh
 EXPOSE 6900
+STOPSIGNAL SIGKILL
 ENTRYPOINT [ "/app/entrypoint.sh" ]
