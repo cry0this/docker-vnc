@@ -1,8 +1,7 @@
 FROM i386/ubuntu:18.04
 RUN apt update \
-&& apt install -y tigervnc-standalone-server openbox wine-stable language-pack-ru \
+&& apt install -y tigervnc-standalone-server tinywm wine-stable language-pack-ru \
 && apt clean
-ADD menu.xml /etc/xdg/openbox/
 RUN groupadd -g 1000 ubuntu \
 && useradd -u 1000 -g ubuntu -s /bin/bash -m ubuntu   \
 && echo "ubuntu:ubuntu" | /usr/sbin/chpasswd 
