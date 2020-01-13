@@ -6,7 +6,8 @@ WORKDIR /app
 RUN wget -O /tmp/novnc.tgz https://github.com/novnc/noVNC/archive/v1.1.0.tar.gz \
 && tar -C /app --strip-components=1 -xf /tmp/novnc.tgz \
 && rm /tmp/novnc.tgz \
-&& sed -i -- "s/ps -p/ps -o pid | grep/g" /app/utils/launch.sh 
+&& sed -i -- "s/ps -p/ps -o pid | grep/g" /app/utils/launch.sh \
+&& sed -i -- "s/UI.initSetting('resize', 'off');/UI.initSetting('resize', 'scale');/g" /app/app/ui.js
 RUN wget -O /tmp/websockify.tgz https://github.com/novnc/websockify/archive/v0.9.0.tar.gz \
 && mkdir /app/utils/websockify \
 && tar -C /app/utils/websockify --strip-components=1 -xf /tmp/websockify.tgz \
