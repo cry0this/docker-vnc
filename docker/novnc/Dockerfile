@@ -11,6 +11,7 @@ RUN wget -O /tmp/websockify.tgz https://github.com/novnc/websockify/archive/v0.9
 && mkdir /app/utils/websockify \
 && tar -C /app/utils/websockify --strip-components=1 -xf /tmp/websockify.tgz \
 && rm /tmp/websockify.tgz
+RUN cp /app/vnc.html /app/index.html
 ENV VNC_HOST=localhost VNC_PORT=5900 NOVNC_PORT=6900
 ADD entrypoint.sh /app
 RUN chmod +x /app/entrypoint.sh

@@ -1,10 +1,10 @@
 version: '2'
 services:
-  x11vnc:
+  tigervnc:
     build:
-      context: ./docker/x11vnc
+      context: ./docker/tigervnc
       dockerfile: ./Dockerfile
-    container_name: x11vnc
+    container_name: tigervnc
     environment:
       - VNC_RESOLUTION=${VNC_RESOLUTION}
       - VNC_COL_DEPTH=${VNC_COL_DEPTH}
@@ -13,25 +13,24 @@ services:
       - LANGUAGE=${LANGUAGE}
       - LC_ALL=${LC_ALL}
     volumes:
-      - ./data/wineprefix:/home/alpine/.wine:rw
-      - ./data/shared:/home/alpine/shared:rw
+      - ./data/wineprefix:/home/ubuntu/.wine:rw
+      - ./data/shared:/home/ubuntu/shared:rw
   novnc:
     build:
       context: ./docker/novnc
       dockerfile: ./Dockerfile
     container_name: novnc
     depends_on: 
-      - x11vnc
+      - tigervnc
     environment:
-      - VNC_HOST=x11vnc
+      - VNC_PORT=${VNC_PORT}
+      - VNC_HOST=${VNC_HOST}
   nginx:
-    build:
-      context: ./docker/nginx
-      dockerfile: ./Dockerfile
+    image: nginx:1.17.7-alpine
     container_name: nginx
     depends_on:
       - novnc
-      - x11vnc
+      - tigervnc
     ports:
       - 80:80
       - 443:443
