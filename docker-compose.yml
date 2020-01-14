@@ -4,7 +4,7 @@ services:
     build:
       context: ./docker/tigervnc
       dockerfile: ./Dockerfile
-    container_name: tigervnc
+    container_name: vnc
     environment:
       - VNC_RESOLUTION=${VNC_RESOLUTION}
       - VNC_COL_DEPTH=${VNC_COL_DEPTH}
@@ -15,21 +15,23 @@ services:
     volumes:
       - ./data/wineprefix:/home/ubuntu/.wine:rw
       - ./data/shared:/home/ubuntu/shared:rw
-  novnc:
+  websockify:
     build:
-      context: ./docker/novnc
+      context: ./docker/websockify
       dockerfile: ./Dockerfile
-    container_name: novnc
+    container_name: websockify
     depends_on: 
       - tigervnc
     environment:
       - VNC_PORT=${VNC_PORT}
       - VNC_HOST=${VNC_HOST}
   nginx:
-    image: nginx:1.17.7-alpine
+    build: 
+      context: ./docker/nginx
+      dockerfile: ./Dockerfile
     container_name: nginx
     depends_on:
-      - novnc
+      - websockify
       - tigervnc
     ports:
       - 80:80
