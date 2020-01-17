@@ -15,27 +15,28 @@ services:
     volumes:
       - ./data/wineprefix:/home/ubuntu/.wine:rw
       - ./data/shared:/home/ubuntu/shared:rw
+    depends_on:
+      - websockify
+      - nginx
+
   websockify:
     build:
       context: ./docker/websockify
       dockerfile: ./Dockerfile
     container_name: websockify
-    depends_on: 
-      - tigervnc
     environment:
       - VNC_PORT=${VNC_PORT}
       - VNC_HOST=${VNC_HOST}
+      
   nginx:
     build: 
       context: ./docker/nginx
       dockerfile: ./Dockerfile
     container_name: nginx
-    depends_on:
-      - websockify
-      - tigervnc
     ports:
       - 80:80
       - 443:443
+      - 1935:1935
     volumes:
       - ./data/nginx:/etc/nginx/conf.d:ro
       - ./data/cert:/etc/nginx/ssl:ro
