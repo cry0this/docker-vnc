@@ -70,7 +70,7 @@
     </script>
     <!-- actual script modules -->
     <script type="module" crossorigin="anonymous" src="app/ui.js"></script>
-    <script src="hls.js"></script>
+    <script src="jsmpeg.min.js"></script>
     <!-- end scripts -->
 </head>
 
@@ -328,33 +328,17 @@
         <source src="app/sounds/bell.mp3" type="audio/mpeg">
     </audio>
 
-    
-    <audio id="audio"></audio>
+    <script>
+        var player = new JSMpeg.Player('ws://example.com/audio', {
+          audio: true, 
+          video: false, 
+          progressive: true,
+          audioBufferSize: 128*1024, 
+          maxAudioLag: 2, 
+          alutoplay: true
+        });
+    </script>
 
  </body>
- <script>
-  if (Hls.isSupported()) {
-    var audio = document.getElementById('audio');
-    var config = {
-      maxBufferLength: 1,
-      maxMaxBufferLength: 128*1000,
-      maxBufferHole: 0.1,
-      lowBufferWatchdogPeriod: 0.1,
-      highBufferWatchdogPeriod: 0.2,
-      maxMaxBufferLength: 200,
-      liveSyncDuration: 0.1
-    };
-    var hls = new Hls(config);
-    // bind them together
-    hls.attachMedia(audio);
-    hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-      console.log("audio and hls.js are now bound together !");
-      hls.loadSource("http://example.com/stream/audio.m3u8");
-      hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-        console.log("manifest loaded, found " + data.levels.length + " quality level");
-      });
-    });
-    audio.play();
-  }
-</script>
+  
 </html>

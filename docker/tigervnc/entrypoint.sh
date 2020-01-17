@@ -5,7 +5,7 @@ pulseaudio -n -v \
             --load=module-always-sink \
             --start
 
-ffmpeg -f pulse -i default -fflags nobuffer -ac 1 -c:a aac -ar 22050 -ab 128k -f flv rtmp://nginx:1935/stream/audio &> /dev/null &
+ffmpeg -f pulse -i default -fflags nobuffer -c:a mp2 -ar 44100 -ab 128k -f mpegts http://jsmpeg:8081/audio &> /dev/null &
 
 if [[ ! -d /home/ubuntu/.vnc ]]; then 
   mkdir /home/ubuntu/.vnc
