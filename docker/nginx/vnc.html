@@ -188,26 +188,25 @@
                 title="Sound">
               <div class="noVNC_vcenter">
                 <div id="noVNC_sound" class="noVNC_panel">
-                  <ul>
-                    <li class="noVNC_heading">
+                    <div class="noVNC_heading">
                       <img alt="" src="app/images/sound.svg"> Sound
-                    </li>
-                    <li>
-                      <label><input id="noVNC_sound_toggle" type="checkbox"> On</label>
-                    </li>
-                    <li>
+                    </div>
+                    <div>
+                      <label><input id="noVNC_sound_toggle" type="checkbox" checked> On</label>
+                    </div>
+                    <div><hr></div>
+                    <div> 
                       <label>Volume</label>
                       <input id="noVNC_sound_volume" type="range" min="0" max="20" value="10">
-                    </li>
-                    <li>
+                    </div>
+                    <div>
                       <label>Buffer size (kb)</label>
                       <input id="noVNC_sound_buffer" type="number" min="1" max="1024" value="96"> 
-                    </li>
-                    <li>
-                      <label>Latency (ms)</label>
+                    </div>
+                    <div>
+                      <label>Max audio lag (ms)</label>
                       <input id="noVNC_sound_latency" type="number" min="100" max="5000" value="1000">
-                    </li>
-                  </ul>
+                    </div>
                 </div>
               </div>
 

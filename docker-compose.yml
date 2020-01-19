@@ -46,4 +46,3 @@ services:
     volumes:
       - ./data/nginx:/etc/nginx/conf.d:ro
       - ./data/cert:/etc/nginx/ssl:ro
-

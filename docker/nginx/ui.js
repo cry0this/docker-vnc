@@ -17,9 +17,10 @@ import Keyboard from "../core/input/keyboard.js";
 import RFB from "../core/rfb.js";
 import * as WebUtil from "./webutil.js";
 
-var jsplayer = null;
 
 const UI = {
+
+    jsplayer: null,
 
     connected: false,
     desktopName: "",
@@ -331,22 +332,11 @@ const UI = {
             }
           });
       document.getElementById("noVNC_sound_buffer")
-          .addEventListener('change', (event) => {
-            let buffer = document.getElementById("noVNC_sound_buffer").value;
-            let latency = document.getElementById("noVNC_sound_latency").value;
-            UI.recreateSound(buffer, latency);
-          });
+          .addEventListener('change', UI.recreateSound);
       document.getElementById("noVNC_sound_latency")
-          .addEventListener('change', (event) => {
-            let buffer = document.getElementById("noVNC_sound_buffer").value;
-            let latency = document.getElementById("noVNC_sound_latency").value;
-            UI.recreateSound(buffer, latency);
-          });
+          .addEventListener('change',  UI.recreateSound);
       document.getElementById("noVNC_sound_volume")
-          .addEventListener('change', (event) => {
-            let volume = document.getElementById("noVNC_sound_volume").value;
-            UI.changeSoundVolume(volume);
-          });
+          .addEventListener('change', UI.changeSoundVolume);
     },
 
     // Add a call to save settings when the element changes,
@@ -978,37 +968,35 @@ const UI = {
   },
     
     turnOnSound() {
-      jsplayer.play();
+      UI.jsplayer.play();
     },
 
     turnOffSound() {
-      jsplayer.pause();
+      UI.jsplayer.pause();
     },
 
     recreateSound(buffer, latency) {
-      jsplayer.destroy();
+      UI.jsplayer.destroy();
 
       let audio_url;
       audio_url =  UI.getSetting('encrypt') ? 'wss' : 'ws';
       audio_url += '://' + UI.getSetting('host');
       audio_url += '/audio';
 
-      jsplayer = new JSMpeg.Player(audio_url, {
+      UI.jsplayer = new JSMpeg.Player(audio_url, {
         audio: true, 
         video: false, 
         progressive: true,
-        audioBufferSize: buffer*1024, 
-        maxAudioLag: latency/1000, 
-        alutoplay: true
+        audioBufferSize: document.getElementById('noVNC_sound_buffer').value*1024, 
+        maxAudioLag: document.getElementById('noVNC_sound_latency').value/1000, 
+        alutoplay: document.getElementById('noVNC_sound_toggle').val,
+        pauseWhenHidden: false
       });
     },
 
-    changeSoundVolume(volume) {
-      if (volume != 0) {
-        jsplayer.volume = volume/10;
-      } else {
-        jsplayer.volume = volume;
-      }
+    changeSoundVolume() {
+      let volume = document.getElementById('noVNC_sound_volume').value;
+      UI.jsplayer.volume = volume/20;
     },
 
 /* ------^-------
@@ -1187,13 +1175,14 @@ const UI = {
         audio_url += '://' + UI.getSetting('host');
         audio_url += '/audio';
 
-        jsplayer = new JSMpeg.Player(audio_url, {
+        UI.jsplayer = new JSMpeg.Player(audio_url, {
           audio: true, 
           video: false, 
           progressive: true,
-          audioBufferSize: 96*1024, 
-          maxAudioLag: 1.0, 
-          alutoplay: true
+          audioBufferSize: document.getElementById('noVNC_sound_buffer').value*1024, 
+          maxAudioLag: document.getElementById('noVNC_sound_latency').value/1000, 
+          alutoplay: document.getElementById('noVNC_sound_toggle').val,
+          pauseWhenHidden: false
         });
 
         UI.connected = true;
@@ -1217,7 +1206,7 @@ const UI = {
     disconnectFinished(e) {
         const wasConnected = UI.connected;
 
-        jsplayer.destroy();
+        UI.jsplayer.destroy();
         // This variable is ideally set when disconnection starts, but
         // when the disconnection isn't clean or if it is initiated by
         // the server, we need to do it here as well since
