@@ -69,8 +69,8 @@
         });
     </script>
     <!-- actual script modules -->
+    <script src="jsmpeg/jsmpeg.min.js"></script>
     <script type="module" crossorigin="anonymous" src="app/ui.js"></script>
-    <script src="jsmpeg.min.js"></script>
     <!-- end scripts -->
 </head>
 
@@ -181,6 +181,35 @@
             <input type="image" alt="Fullscreen" src="app/images/fullscreen.svg"
                 id="noVNC_fullscreen_button" class="noVNC_button noVNC_hidden"
                 title="Fullscreen">
+
+            <!-- Toggle sound -->
+              <input type="image" alt="Sound button" src="app/images/sound.svg"
+                id="noVNC_sound_button" class="noVNC_button"
+                title="Sound">
+              <div class="noVNC_vcenter">
+                <div id="noVNC_sound" class="noVNC_panel">
+                  <ul>
+                    <li class="noVNC_heading">
+                      <img alt="" src="app/images/sound.svg"> Sound
+                    </li>
+                    <li>
+                      <label><input id="noVNC_sound_toggle" type="checkbox"> On</label>
+                    </li>
+                    <li>
+                      <label>Volume</label>
+                      <input id="noVNC_sound_volume" type="range" min="0" max="20" value="10">
+                    </li>
+                    <li>
+                      <label>Buffer size (kb)</label>
+                      <input id="noVNC_sound_buffer" type="number" min="1" max="1024" value="96"> 
+                    </li>
+                    <li>
+                      <label>Latency (ms)</label>
+                      <input id="noVNC_sound_latency" type="number" min="100" max="5000" value="1000">
+                    </li>
+                  </ul>
+                </div>
+              </div>
 
             <!-- Settings -->
             <input type="image" alt="Settings" src="app/images/settings.svg"
@@ -327,17 +356,6 @@
         <source src="app/sounds/bell.oga" type="audio/ogg">
         <source src="app/sounds/bell.mp3" type="audio/mpeg">
     </audio>
-
-    <script>
-        var player = new JSMpeg.Player('ws://example.com/audio', {
-          audio: true, 
-          video: false, 
-          progressive: true,
-          audioBufferSize: 128*1024, 
-          maxAudioLag: 2, 
-          alutoplay: true
-        });
-    </script>
 
  </body>
   
