@@ -976,7 +976,9 @@ const UI = {
     },
 
     recreateSound(buffer, latency) {
-      UI.jsplayer.destroy();
+      if (UI.jsplayer != null) {
+        UI.jsplayer.destroy();
+      }
 
       let audio_url;
       audio_url =  UI.getSetting('encrypt') ? 'wss' : 'ws';
@@ -990,8 +992,9 @@ const UI = {
         audioBufferSize: document.getElementById('noVNC_sound_buffer').value*1024, 
         maxAudioLag: document.getElementById('noVNC_sound_latency').value/1000, 
         alutoplay: document.getElementById('noVNC_sound_toggle').val,
-        pauseWhenHidden: false
+        pauseWhenHidden: true
       });
+      UI.changeSoundVolume();
     },
 
     changeSoundVolume() {
@@ -1170,20 +1173,7 @@ const UI = {
 
     connectFinished(e) {
 
-        let audio_url;
-        audio_url =  UI.getSetting('encrypt') ? 'wss' : 'ws';
-        audio_url += '://' + UI.getSetting('host');
-        audio_url += '/audio';
-
-        UI.jsplayer = new JSMpeg.Player(audio_url, {
-          audio: true, 
-          video: false, 
-          progressive: true,
-          audioBufferSize: document.getElementById('noVNC_sound_buffer').value*1024, 
-          maxAudioLag: document.getElementById('noVNC_sound_latency').value/1000, 
-          alutoplay: document.getElementById('noVNC_sound_toggle').val,
-          pauseWhenHidden: false
-        });
+	UI.recreateSound();
 
         UI.connected = true;
         UI.inhibit_reconnect = false;
