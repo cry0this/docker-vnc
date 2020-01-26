@@ -10,6 +10,7 @@ ENV VNC_RESOLUTION="1280x720" VNC_COL_DEPTH="24" VNC_PASSWORD="vncpassword"
 EXPOSE 5901
 ADD entrypoint.sh /
 RUN chmod +x /entrypoint.sh
+WORKDIR /home/ubuntu
 USER 1000
 STOPSIGNAL SIGKILL
 ENTRYPOINT [ "/entrypoint.sh" ]
