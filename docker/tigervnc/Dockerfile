@@ -1,6 +1,6 @@
 FROM i386/ubuntu:18.04
 RUN apt update \
-&& apt install -y tigervnc-standalone-server tinywm wine-stable language-pack-ru ffmpeg pulseaudio \
+&& DEBIAN_FRONTEND=noninteractive apt install -y tigervnc-standalone-server tinywm wine-stable language-pack-ru ffmpeg pulseaudio \
 && apt clean
 RUN groupadd -g 1000 ubuntu \
 && useradd -u 1000 -g ubuntu -s /bin/bash -m ubuntu   \
