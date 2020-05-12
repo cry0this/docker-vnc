@@ -11,6 +11,7 @@ EXPOSE 5901
 ADD entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 WORKDIR /home/ubuntu
+RUN mkdir /home/ubuntu/.wine && chown -R ubuntu:ubuntu /home/ubuntu/.wine
 USER 1000
 STOPSIGNAL SIGKILL
 ENTRYPOINT [ "/entrypoint.sh" ]
